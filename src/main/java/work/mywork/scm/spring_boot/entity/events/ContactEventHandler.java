@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
-import work.mywork.scm.spring_boot.entity.contact.Contact;
+import work.mywork.scm.spring_boot.entity.Contact;
 
 @Component
 @RepositoryEventHandler(Contact.class)
