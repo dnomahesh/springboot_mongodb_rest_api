@@ -4,9 +4,11 @@ FROM maven:3.9.4-eclipse-temurin-17
 # Set working directory
 WORKDIR /app
 
-# Copy everything and build
+# Copy everything
 COPY . .
-RUN mvn clean install -DskipTests
 
-# Run the Spring Boot app
+# Build the application
+RUN ./mvnw clean install -DskipTests
+
+# Run the application
 CMD ["java", "-jar", "target/spring-boot-0.0.1-SNAPSHOT.jar"]
