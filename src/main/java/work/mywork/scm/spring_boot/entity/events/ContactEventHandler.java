@@ -9,7 +9,6 @@ import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
 
 import work.mywork.scm.spring_boot.entity.Contact;
-import work.mywork.scm.spring_boot.entity.User;
 import work.mywork.scm.spring_boot.exception.DuplicateResourceException;
 import work.mywork.scm.spring_boot.repository.ContactRepository;
 
