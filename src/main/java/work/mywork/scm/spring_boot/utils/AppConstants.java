@@ -1,4 +1,4 @@
-package main.java.work.mywork.scm.spring_boot.utils;
+package work.mywork.scm.spring_boot.utils;
 
 public class AppConstants {
 
