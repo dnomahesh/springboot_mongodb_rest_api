@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 public class Contact {
 
     @Id
-    @Indexed(unique = true)
     private String id;
     private String name;
     @Indexed(unique = true)
