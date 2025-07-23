@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: smart-contact-manager
+    env: docker
+    plan: free
+    region: oregon
+    buildCommand: "./mvnw clean install -DskipTests"
+    startCommand: "java -jar target/spring-boot-0.0.1-SNAPSHOT.jar"
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: MONGO_URI
+        value: mongodb+srv://maheshtripathijobs247:mahesh123@cluster0.yxgahal.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
