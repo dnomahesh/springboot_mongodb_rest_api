@@ -8,4 +8,7 @@ import work.mywork.scm.spring_boot.entity.User;
 @RepositoryRestResource(exported = true)
 public interface UserRepository extends MongoRepository<User, String> {
 
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNumber(String phoneNumber);
 }

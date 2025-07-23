@@ -12,6 +12,10 @@ import work.mywork.scm.spring_boot.entity.Contact;
 @RepositoryRestResource(path = "contacts", collectionResourceRel = "contacts")
 public interface ContactRepository extends MongoRepository<Contact, String> {
 
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
     @RestResource(exported = false)
     List<Contact> findByEmailContainingIgnoreCase(String email);
 
