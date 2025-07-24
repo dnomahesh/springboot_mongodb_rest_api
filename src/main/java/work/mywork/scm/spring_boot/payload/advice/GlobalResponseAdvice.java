@@ -75,6 +75,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
 
             // No valid pagination params? Return full list
             return new ApiResponse<>(Map.of("data", list, "page", null));
+        //  return Map.of("data", list, "page", null);
         }
 
         // Handle Page<T>
