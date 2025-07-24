@@ -9,4 +9,4 @@ services:
     dockerfilePath: Dockerfile
     envVars:
       - key: MONGO_URI
-        value: ***REMOVED***
+        value: mongodb://maheshtripathijobs247:mahesh123@cluster0.yxgahal.mongodb.net/?retryWrites=true&w=majority
