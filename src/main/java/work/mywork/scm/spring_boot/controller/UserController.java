@@ -1,13 +1,16 @@
 package work.mywork.scm.spring_boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import work.mywork.scm.spring_boot.entity.Contact;
 import work.mywork.scm.spring_boot.entity.User;
 import work.mywork.scm.spring_boot.exception.DuplicateResourceException;
 import work.mywork.scm.spring_boot.repository.UserRepository;
-
 import java.util.*;
 
 @RestController
@@ -18,9 +21,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+public Page<User> getAllUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+) {
+    Pageable pageable = PageRequest.of(page, size);
+    return userRepository.findAll(pageable);
+}
 
     @PostMapping
     public ResponseEntity<User> addUser(@RequestBody User user) {
@@ -41,6 +48,17 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+@GetMapping("/by-name")
+public Page<User> searchByName(
+        @RequestParam String name,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    return userRepository.findByNameContainingIgnoreCase(name, pageable);
+}
+
 
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody User updatedUser) {
@@ -63,18 +81,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/by-name")
-    public List<User> searchByName(@RequestParam String name) {
-        return userRepository.findByNameContainingIgnoreCase(name);
-    }
-
     @GetMapping("/by-phone")
-    public List<User> searchByPhone(@RequestParam("phone") String phoneNumber) {
-        return userRepository.findByPhoneNumberContainingIgnoreCase(phoneNumber);
+    public boolean searchByPhone(@RequestParam("phone") String phoneNumber) {
+        return userRepository.existsByPhoneNumber(phoneNumber);
     }
 
     @GetMapping("/by-email")
-    public List<User> searchByEmail(@RequestParam String email) {
-        return userRepository.findByEmailContainingIgnoreCase(email);
+    public boolean searchByEmail(@RequestParam String email) {
+        return userRepository.existsByEmail(email);
     }
 }
