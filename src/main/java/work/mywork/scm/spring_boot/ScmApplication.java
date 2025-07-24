@@ -8,12 +8,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = "work.mywork.scm.spring_boot.repository")
-@EntityScan(basePackages = "work.mywork.scm.spring_boot.entity")
 @ComponentScan(basePackages = "work.mywork.scm.spring_boot")
+@EntityScan(basePackages = "work.mywork.scm.spring_boot.entity")  // Not needed for MongoDB, but harmless
 public class ScmApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ScmApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(ScmApplication.class, args);
+    }
 }
