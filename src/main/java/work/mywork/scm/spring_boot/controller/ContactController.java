@@ -1,6 +1,9 @@
 package work.mywork.scm.spring_boot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,10 +20,24 @@ public class ContactController {
     @Autowired
     private ContactRepository contactRepository;
 
-    @GetMapping
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
-    }
+@GetMapping
+public Page<Contact> getAllContacts(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size
+) {
+    Pageable pageable = PageRequest.of(page, size);
+    return contactRepository.findAll(pageable);
+}
+
+@GetMapping("/by-name")
+public Page<Contact> searchByName(
+        @RequestParam String name,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+
+    Pageable pageable = PageRequest.of(page, size);
+    return contactRepository.findByNameContainingIgnoreCase(name, pageable);
+}
 
     @PostMapping
     public ResponseEntity<Contact> addContact(@RequestBody Contact contact) {
@@ -63,18 +80,13 @@ public class ContactController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/by-name")
-    public List<Contact> searchByName(@RequestParam String name) {
-        return contactRepository.findByNameContainingIgnoreCase(name);
-    }
-
     @GetMapping("/by-phone")
-    public List<Contact> searchByPhone(@RequestParam("cno") String phoneNumber) {
-        return contactRepository.findByPhoneNumberContainingIgnoreCase(phoneNumber);
+    public boolean searchByPhone(@RequestParam("cno") String phoneNumber) {
+        return contactRepository.existsByPhoneNumber(phoneNumber);
     }
 
     @GetMapping("/by-email")
-    public List<Contact> searchByEmail(@RequestParam String email) {
-        return contactRepository.findByEmailContainingIgnoreCase(email);
+    public boolean searchByEmail(@RequestParam String email) {
+        return contactRepository.existsByEmail(email);
     }
 }
