@@ -3,6 +3,7 @@ package work.mywork.scm.spring_boot.entity.events;
 import java.util.UUID;
 
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ public class UserEventHandler {
     private org.slf4j.Logger log = LoggerFactory.getLogger(UserEventHandler.class);
     private final UserRepository userRepository;
 
+    
+    @Autowired
     public UserEventHandler(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
