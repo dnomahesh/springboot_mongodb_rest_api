@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class ContactEventHandler {
     private Logger log = LoggerFactory.getLogger(ContactEventHandler.class);
     private ContactRepository contactRepository;
 
+    @Autowired
     ContactEventHandler(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
