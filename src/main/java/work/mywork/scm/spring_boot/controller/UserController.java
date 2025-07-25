@@ -9,17 +9,17 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import work.mywork.scm.spring_boot.config.AppProperties;
 import work.mywork.scm.spring_boot.entity.User;
 import work.mywork.scm.spring_boot.exception.DuplicateResourceException;
 import work.mywork.scm.spring_boot.repository.UserRepository;
 import work.mywork.scm.spring_boot.service.StorageService;
+import work.mywork.scm.spring_boot.utils.AppConstants;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
@@ -32,6 +32,10 @@ public class UserController {
     @Autowired
     private StorageService storageService;
 
+
+    @Autowired
+private AppProperties appProperties;
+
     @GetMapping
     public Page<User> getAllUsers(
             @RequestParam(defaultValue = "0") int page,
@@ -41,8 +45,11 @@ public class UserController {
         return userRepository.findAll(pageable);
     }
 
-    @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<User> addUser(@RequestBody User user,
+     @RequestPart(value = "image", required = false) MultipartFile imageFile,
+      @RequestPart(value = "video", required = false) MultipartFile videoFile
+     ) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new DuplicateResourceException("Email already exists");
         }
@@ -51,6 +58,36 @@ public class UserController {
             throw new DuplicateResourceException("Phone number already exists");
         }
 
+    
+    // Upload image if provided
+    if (imageFile != null && !imageFile.isEmpty()) {
+        if(imageFile.getSize() > appProperties.getMaxFileSizeInBytes()) { 
+            throw new IllegalArgumentException("Image file size exceeds the limit of "+appProperties.getMaxFileSize()+"MB");
+        }
+
+         String contentType = imageFile.getContentType();
+    if (contentType == null || !appProperties.getAllowedImageTypes().contains(contentType)) {
+        throw new IllegalArgumentException("Unsupported Image type: " + contentType);
+    }
+        String imageUrl = storageService.store(imageFile);
+        user.setImageUrl(imageUrl);
+    }
+
+    // Upload video if provided
+    if (videoFile != null && !videoFile.isEmpty()) {
+        if(videoFile.getSize() > appProperties.getMaxFileSizeInBytes()) { 
+            throw new IllegalArgumentException("Video file size exceeds the limit of "+appProperties.getMaxFileSize()+"MB");
+        }
+        
+         String contentType = videoFile.getContentType();
+    if (contentType == null || !appProperties.getAllowedVideoTypes().contains(contentType)) {
+        throw new IllegalArgumentException("Unsupported Video type: " + contentType);
+    }
+
+        String videoUrl = storageService.store(videoFile);
+        user.setVideoUrl(videoUrl);
+    }
+    
         user.setId(UUID.randomUUID().toString());
         return ResponseEntity.ok(userRepository.save(user));
     }
@@ -104,6 +141,15 @@ public class UserController {
 
     @PutMapping("/{id}/uploadImage")
     public ResponseEntity<User> uploadUserImage(@PathVariable String id, @RequestParam("image") MultipartFile file) {
+        
+        if(file.getSize() > appProperties.getMaxFileSizeInBytes()) { 
+            throw new IllegalArgumentException("Image file size exceeds the limit of "+appProperties.getMaxFileSize()+"MB");
+        }
+        
+         String contentType = file.getContentType();
+    if (contentType == null || !appProperties.getAllowedImageTypes().contains(contentType)) {
+        throw new IllegalArgumentException("Unsupported Image type: " + contentType);
+    }
         String fileUrl = storageService.store(file);
         User user = userRepository.findById(id).orElseThrow();
         user.setImageUrl(fileUrl);
@@ -113,6 +159,16 @@ public class UserController {
 
     @PutMapping("/{id}/uploadVideo")
     public ResponseEntity<User> uploadUserVideo(@PathVariable String id, @RequestParam("video") MultipartFile file) {
+        
+        if(file.getSize() > appProperties.getMaxFileSizeInBytes()) { 
+            throw new IllegalArgumentException("Video file size exceeds the limit of "+appProperties.getMaxFileSize()+"MB");
+        }
+
+        
+         String contentType = file.getContentType();
+    if (contentType == null || !appProperties.getAllowedVideoTypes().contains(contentType)) {
+        throw new IllegalArgumentException("Unsupported Video type: " + contentType);
+    }
         String fileUrl = storageService.store(file);
         User user = userRepository.findById(id).orElseThrow();
         user.setVideoUrl(fileUrl);
