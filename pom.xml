@@ -47,6 +47,25 @@
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency> -->
 
+<!--  Upload and Save on Cloud (Recommended – Cloudinary / S3) -->
+<!-- <dependency>
+    <groupId>com.cloudinary</groupId>
+    <artifactId>cloudinary-http44</artifactId>
+    <version>1.29.0</version>
+</dependency> -->
+
+<!-- Amazon S3 SDK -->
+<dependency>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-java-sdk-s3</artifactId>
+    <version>1.12.640</version>
+</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
     <!-- Spring Data MongoDB -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
