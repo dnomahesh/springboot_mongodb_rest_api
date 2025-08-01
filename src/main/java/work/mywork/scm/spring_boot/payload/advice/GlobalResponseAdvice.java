@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
@@ -32,7 +33,7 @@ public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
                                   ServerHttpResponse response) {
 
         // If already wrapped, return as-is
-        if (body instanceof ApiResponse<?>) return body;
+        if (body instanceof ApiResponse) return body;
 
         
         // Handle List<T> manually if ?page and ?size are provided
