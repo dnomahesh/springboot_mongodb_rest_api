@@ -15,8 +15,6 @@ import work.mywork.scm.spring_boot.entity.User;
 import work.mywork.scm.spring_boot.exception.DuplicateResourceException;
 import work.mywork.scm.spring_boot.repository.UserRepository;
 import work.mywork.scm.spring_boot.service.StorageService;
-import work.mywork.scm.spring_boot.utils.AppConstants;
-
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
