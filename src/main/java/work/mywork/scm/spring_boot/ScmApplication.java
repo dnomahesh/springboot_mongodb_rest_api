@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 @SpringBootApplication
 @EnableMongoRepositories(basePackages = "work.mywork.scm.spring_boot.repository")
 @ComponentScan(basePackages = "work.mywork.scm.spring_boot")
@@ -13,6 +15,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class ScmApplication {
 
     public static void main(String[] args) {
+         Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        dotenv.entries().forEach(entry ->
+                System.setProperty(entry.getKey(), entry.getValue()));
+
         SpringApplication.run(ScmApplication.class, args);
     }
 }
