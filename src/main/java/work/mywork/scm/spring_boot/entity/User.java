@@ -30,6 +30,9 @@ public class User {
     @DBRef
     private Set<Contact> contacts = new LinkedHashSet<>();
 
+    private String imageUrl;
+    private String videoUrl;
+
     public String getId() {
         return id;
     }
@@ -142,18 +145,35 @@ public class User {
         this.contacts.remove(contact);
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getVideoUrl() {
+        return videoUrl;
+    }
+
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
+
     @Override
     public String toString() {
         return "User [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", about=" + about
                 + ", profilePicture=" + profilePicture + ", phoneNumber=" + phoneNumber + ", enabled=" + enabled
                 + ", emailVerified=" + emailVerified + ", phoneVerified=" + phoneVerified + ", provider=" + provider
-                + ", emailToken=" + emailToken + ", contacts=" + contacts + ", getId()=" + getId() + ", getName()="
-                + getName() + ", getEmail()=" + getEmail() + ", getPassword()=" + getPassword() + ", getClass()="
-                + getClass() + ", getAbout()=" + getAbout() + ", getProfilePicture()=" + getProfilePicture()
-                + ", getPhoneNumber()=" + getPhoneNumber() + ", isEnabled()=" + isEnabled() + ", isEmailVerified()="
-                + isEmailVerified() + ", isPhoneVerified()=" + isPhoneVerified() + ", getProvider()=" + getProvider()
-                + ", getEmailToken()=" + getEmailToken() + ", getContacts()=" + getContacts() + ", hashCode()="
-                + hashCode() + ", toString()=" + super.toString() + "]";
+                + ", emailToken=" + emailToken + ", contacts=" + contacts + ", imageUrl=" + imageUrl + ", videoUrl="
+                + videoUrl + ", getId()=" + getId() + ", getName()=" + getName() + ", getEmail()=" + getEmail()
+                + ", getPassword()=" + getPassword() + ", getClass()=" + getClass() + ", getAbout()=" + getAbout()
+                + ", getProfilePicture()=" + getProfilePicture() + ", getPhoneNumber()=" + getPhoneNumber()
+                + ", isEnabled()=" + isEnabled() + ", isEmailVerified()=" + isEmailVerified() + ", isPhoneVerified()="
+                + isPhoneVerified() + ", getProvider()=" + getProvider() + ", getEmailToken()=" + getEmailToken()
+                + ", getContacts()=" + getContacts() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString()
+                + "]";
     }
 
     
